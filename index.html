@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <title>Web-разработка(BackEnd) Задание 2</title>
+    </head>
+
+    <body>
+        <h1>Заданние №1</h1>
+        <ul>
+            <li>Сперва закидываем файлы для задания в репозиторий, после используем git pull через ssh, чтобы перенести папку из репозитория файлы на сервер. Приступаем к работе.<br>
+                <br>
+            </li>
+            <li><img src="Pull.png" alt="open" style="width: 300px;"></li>
+            <li>Для получения главной страницы в протоколе HTTP 1.0 используем запрос:<br>
+                <br>
+                GET / HTTP/1.0<br>
+                <br>
+                Метод GET посылает запрос на получение информации от сервера. В ответ сервер возвращает запрошенный ресурс (главную страницу). В протоколе HTTP 1.0 после каждого запроса соединение закрывается, поэтому заголовок Host не требуется, но может быть добавлен. Структура запроса: GET(метод) /(путь к ресурсу) HTTP/1.0(версия протокола).<br>
+                <br>
+            </li>
+            <li><img src="1.png" alt="open" style="width: 300px;"></li>
+            <li>Для получения внутренней страницы в протоколе HTTP 1.1 используем запрос:<br>
+                <br>
+                GET /ShionKigami-backend-1.github.io/index.html HTTP/1.1 /n<br>
+                Host: u82624.kubsu-dev.ru /n<br>
+                Connection: close<br>
+                <br>
+                С протоколом HTTP 1.1 обязательно указывается заголовок Host, так как на одном IP-адресе может находиться несколько сайтов. Заголовок Connection: close указывает серверу закрыть соединение после ответа, иначе соединение остаётся открытым для последующих запросов. Структура: GET(метод) /путь/к/странице(request-uri) HTTP/1.1(версия) Host(обязательный заголовок).<br>
+                <br>
+            </li>
+            <li><img src="2.png" alt="open" style="width: 300px;"></li>
+            <li>Для определения размера файла file.tar.gz, не скачивая его, используем запрос:<br>
+                <br>
+                HEAD /ShionKigami-backend-1.github.io/files/file.tar.gz HTTP/1.1<br>
+                Host: u82624.kubsu-dev.ru<br>
+                Connection: close<br>
+                <br>
+                Метод HEAD аналогичен GET, но сервер возвращает только заголовки ответа без тела ресурса. Размер файла передаётся в заголовке Content-Length. Это позволяет узнать размер файла без его загрузки. Структура: HEAD(метод) request-uri HTTP/1.1(версия) Host(обязательный заголовок).<br>
+                <br>
+            </li>
+            <li><img src="3.png" alt="open" style="width: 300px;"></li>
+            <li>Для определения медиатипа ресурса /image.png используем запрос:<br>
+                <br>
+                HEAD /ShionKigami-backend-1.github.io/files/image.png HTTP/1.1<br>
+                Host: u82624.kubsu-dev.ru<br>
+                Connection: close<br>
+                <br>
+                Медиатип (MIME-тип) передаётся в заголовке ответа Content-Type (например, image/png). HEAD позволяет получить этот заголовок без скачивания самого изображения. Структура: HEAD метод + request-uri + HTTP/1.1 + Host.<br>
+                <br>
+            </li>
+            <li><img src="4.png" alt="open" style="width: 300px;"></li>
+            <li>Для отправки комментария на сервер по адресу /index.php используем запрос:<br>
+                <br>
+                POST /ShionKigami-backend-1.github.io/files/index.php HTTP/1.1POST /ShionKigami-backend-1.github.io/files/index.php HTTP/1.1<br>
+                Host: u82624.kubsu-dev.ru<br>
+                Content-Type: application/x-www-form-urlencoded<br>
+                Content-Length: 19<br>
+                Connection: close<br>
+                <br>
+                comment=HelloServer<br>
+                <br>
+                <br>
+                Метод POST используется для передачи данных на сервер в теле запроса. Обязательные заголовки: Content-Type: application/x-www-form-urlencoded (формат данных) и Content-Length: число_байт (длина тела запроса). Тело запроса содержит данные: comment=HelloServer. Сервер обрабатывает эти данные как комментарий. Структура: POST метод + request-uri + HTTP/1.1 + Host + Content-Type + Content-Length + пустая строка + тело_запроса<br>
+                <br>
+            </li>
+            <li><img src="5.png" alt="open" style="width: 300px;"></li>
+            <li>Для получения первых 100 байт файла /file.tar.gz используем запрос:<br>
+                GET /ShionKigami-backend-1.github.io/files/file.tar.gz HTTP/1.1<br>
+                <br>
+                Host: u82624.kubsu-dev.ru<br>
+                Range: bytes=0-99<br>
+                Connection: close<br>
+                <br>
+                С добавлением заголовка Range: bytes=0-99. Заголовок Range позволяет запросить только указанный диапазон байт ресурса, а не весь файл. Сервер при поддержке частичной выдачи возвращает статус 206 Partial Content и только запрошенные байты. Структура: GET + request-uri + HTTP/1.1 + Host + Range: bytes=начало-конец.<br>
+                <br>
+            </li>
+            <li><img src="6.png" alt="open" style="width: 300px;"></li>
+            <li>Для определения кодировки ресурса /index.php используем запрос:<br>
+                <br>
+                HEAD /ShionKigami-backend-1.github.io/files/index.php HTTP/1.1<br>
+                Host: u82624.kubsu-dev.ru<br>
+                Connection: close<br>
+                <br>
+                Кодировка ресурса может быть указана в заголовке Content-Encoding (например, gzip) или в параметре charset заголовка Content-Type (например, charset=utf-8). HEAD позволяет получить эти заголовки без загрузки содержимого. Структура: HEAD метод + request-uri + HTTP/1.1 + Host.<br>
+                <br>
+            </li>
+            <li><img src="7.png" alt="open" style="width: 300px;"></li>
+        </ul>
+    </body>
+
+
+</html>
